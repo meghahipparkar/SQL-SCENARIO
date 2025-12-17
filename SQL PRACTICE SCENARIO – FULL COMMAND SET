@@ -1,0 +1,110 @@
+CREATE DATABASE SchoolDB;
+USE SchoolDB;
+CREATE TABLE Students (
+    StudentID INT PRIMARY KEY,
+    FullName VARCHAR(50),
+    Age INT,
+    City VARCHAR(30),
+    JoinDate DATE
+);
+
+CREATE TABLE Courses (
+    CourseID INT PRIMARY KEY,
+    CourseName VARCHAR(50),
+    Fees FLOAT
+);
+INSERT INTO Students VALUES
+(1, 'Amit Sharma', 20, 'Pune', '2024-01-12'),
+(2, 'Riya Singh', 22, 'Mumbai', '2024-02-10'),
+(3, 'John Carter', 21, 'Pune', '2024-02-15'),
+(4, 'Sneha Patil', 23, 'Delhi', '2024-03-01'),
+(5, 'Amit Sharma', 19, 'Nashik', '2024-03-05');
+
+INSERT INTO Courses VALUES
+(101, 'SQL Basics', 5000),
+(102, 'Python Programming', 7000),
+(103, 'Web Development', 10000);
+SELECT * FROM Students;
+SELECT * FROM Students
+WHERE City = 'Pune';
+SELECT DISTINCT City FROM Students;
+SELECT * FROM Students
+WHERE Age >= 21;
+SELECT * FROM Students
+WHERE FullName LIKE 'A%';
+SELECT * FROM Students
+WHERE City IN ('Pune', 'Mumbai');
+SELECT * FROM Students
+WHERE Age BETWEEN 20 AND 22;
+SELECT * FROM Students
+WHERE City='Pune' AND Age > 20;
+SELECT * FROM Students
+WHERE City='Pune' OR City='Mumbai';
+SELECT * FROM Students
+ORDER BY Age DESC;
+SELECT City, COUNT(*) AS TotalStudents
+FROM Students
+GROUP BY City;
+SELECT City, COUNT(*) AS TotalStudents
+FROM Students
+GROUP BY City
+HAVING COUNT(*) > 1;
+SELECT City FROM Students
+UNION
+SELECT CourseName FROM Courses;
+
+SELECT City FROM Students
+UNION ALL
+SELECT CourseName FROM Courses;
+UPDATE Students
+SET City = 'Bangalore'
+WHERE StudentID = 4;
+DELETE FROM Students
+WHERE StudentID = 5;
+ALTER TABLE Students
+ADD Email VARCHAR(50);
+ALTER TABLE Students
+DROP COLUMN Email;
+DROP TABLE Courses;
+SELECT 
+    COUNT(*) AS TotalStudents,
+    AVG(Age) AS AverageAge,
+    MAX(Age) AS Oldest,
+    MIN(Age) AS Youngest
+FROM Students;
+SELECT UPPER(FullName), LOWER(City)
+FROM Students;
+
+SELECT SUBSTRING(FullName, 1, 4)
+FROM Students;
+CREATE TABLE Courses (
+    CourseID INT PRIMARY KEY,
+    CourseName VARCHAR(50),
+    Fees FLOAT
+);
+CREATE TABLE Enrollment (
+    StudentID INT,
+    CourseID INT
+);
+INSERT INTO Courses VALUES
+(101, 'SQL Basics', 5000),
+(102, 'Python Programming', 7000),
+(103, 'Web Development', 10000);
+
+INSERT INTO Enrollment VALUES
+(1,101),
+(2,101),
+(1,102),
+(3,103);
+SELECT Students.FullName, Courses.CourseName
+FROM Enrollment
+INNER JOIN Students ON Enrollment.StudentID = Students.StudentID
+INNER JOIN Courses ON Enrollment.CourseID = Courses.CourseID;
+SELECT Students.FullName, Courses.CourseName
+FROM Students
+LEFT JOIN Enrollment ON Students.StudentID = Enrollment.StudentID
+LEFT JOIN Courses ON Enrollment.CourseID = Courses.CourseID;
+SELECT Students.FullName, Courses.CourseName
+FROM Students
+RIGHT JOIN Enrollment ON Students.StudentID = Enrollment.StudentID
+RIGHT JOIN Courses ON Enrollment.CourseID = Courses.CourseID;
