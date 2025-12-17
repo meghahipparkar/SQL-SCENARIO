@@ -1,0 +1,88 @@
+DROP DATABASE IF EXISTS InstituteDB1;
+CREATE DATABASE IF NOT EXISTS InstituteDB1;
+USE InstituteDB1;
+
+CREATE TABLE Students (
+    StudentID INT PRIMARY KEY,
+    StudentName VARCHAR(50),
+    Age INT,
+    City VARCHAR(30),
+    JoinDate DATE
+);
+CREATE TABLE Courses (
+    CourseID INT PRIMARY KEY,
+    CourseName VARCHAR(50),
+    Fees DECIMAL(8,2)
+);
+INSERT INTO Students VALUES
+(1, 'Ayan Sharma', 20, 'Pune', '2024-01-10'),
+(2, 'Reyansh Singh', 22, 'Mumbai', '2024-02-05'),
+(3, 'Jocky Peter', 21, 'Pune', '2024-02-15'),
+(4, 'Swara Patil', 23, 'Delhi', '2024-03-01');
+
+INSERT INTO Courses VALUES
+(101, 'SQL', 5000),
+(102, 'Python', 7000),
+(103, 'Web Development', 10000);
+SELECT * FROM Students;
+SELECT * FROM Stuēdents
+WHERE City = 'Pune';
+SELECT DISTINCT City FROM Students;
+SELECT * FROM Students
+WHERE StudentName LIKE 'A%';
+SELECT * FROM Students
+WHERE City IN ('Pune', 'Mumbai');
+SELECT * FROM Students
+WHERE Age BETWEEN 20 AND 22;
+SELECT * FROM Students
+WHERE City = 'Pune' AND Age > 20;
+
+SELECT * FROM Students
+WHERE City = 'Delhi' OR City = 'Mumbai';
+SELECT * FROM Students
+ORDER BY Age DESC;
+SELECT City, COUNT(*) AS TotalStudents
+FROM Students
+GROUP BY City;
+SELECT City, COUNT(*) AS TotalStudents
+FROM Students
+GROUP BY City
+HAVING COUNT(*) > 1;
+SELECT City FROM Students
+UNION
+SELECT CourseName FROM Courses;
+
+SELECT City FROM Students
+UNION ALL
+SELECT CourseName FROM Courses;
+UPDATE Students
+SET City = 'Bangalore'
+WHERE StudentID = 4;
+DELETE FROM Students
+WHERE StudentID = 3;
+ALTER TABLE Students
+ADD Email VARCHAR(50);
+DROP TABLE Courses;
+CREATE TABLE Courses (
+    CourseID INT PRIMARY KEY,
+    CourseName VARCHAR(50),
+    Fees DECIMAL(8,2)
+);
+
+CREATE TABLE Enrollment (
+    StudentID INT,
+    CourseID INT
+);
+INSERT INTO Enrollment VALUES
+(1,101),
+(2,102),
+(1,103);
+SELECT Students.StudentName, Courses.CourseName
+FROM Enrollment
+INNER JOIN Students ON Enrollment.StudentID = Students.StudentID
+INNER JOIN Courses ON Enrollment.CourseID = Courses.CourseID;
+SELECT Students.StudentName, Courses.CourseName
+FROM Students
+LEFT JOIN Enrollment ON Students.StudentID = Enrollment.StudentID
+LEFT JOIN Courses ON Enrollment.CourseID = Courses.CourseID;
+
